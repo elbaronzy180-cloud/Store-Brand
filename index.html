@@ -1,25 +1,43 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>AURA Market — Multi-Vendor Marketplace</title>
-        <!-- PWA -->
-    <link rel="manifest" href="manifest.json" />
-    <link rel="icon" href="icon-192.png" />
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="icon-192.png" />
     <link rel="apple-touch-icon" href="icon-192.png" />
+
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="manifest.json" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black" />
     <meta name="apple-mobile-web-app-title" content="AURA Market" />
     <meta name="theme-color" content="#000000" />
+
+    <!-- Open Graph (Facebook, LinkedIn, WhatsApp, iMessage, etc.) -->
+    <meta property="og:title" content="AURA Market – Multi-Vendor Marketplace" />
+    <meta property="og:description" content="Free storefront platform for sellers. Browse products and contact sellers directly – no fees, no middlemen." />
+    <meta property="og:image" content="https://store-brand.vercel.app/icon-512.png" />
+    <meta property="og:image:width" content="512" />
+    <meta property="og:image:height" content="512" />
+    <meta property="og:url" content="https://store-brand.vercel.app" />
+    <meta property="og:type" content="website" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="AURA Market – Multi-Vendor Marketplace" />
+    <meta name="twitter:description" content="Free storefront platform for sellers. Browse products and contact sellers directly." />
+    <meta name="twitter:image" content="https://store-brand.vercel.app/icon-512.png" />
+
     <!-- Shared Stylesheet -->
     <link rel="stylesheet" href="style.css" />
 
     <!-- Inter Font -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
 
-    <!-- Tailwind (optional, keep if you use utility classes) -->
+    <!-- Tailwind (optional) -->
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body>
@@ -27,12 +45,10 @@
     <!-- ===== Sticky Header ===== -->
     <header id="main-header">
         <div class="container">
-            <!-- Logo -->
             <div id="logo">
                 <a href="#" id="home-link">AURA<span>.</span></a>
             </div>
 
-            <!-- Desktop Navigation (will be hidden on mobile, shown on md+) -->
             <nav id="desktop-nav">
                 <ul>
                     <li><a href="#" data-section="marketplace">Marketplace</a></li>
@@ -41,7 +57,6 @@
                 </ul>
             </nav>
 
-            <!-- Mobile Menu Toggle Button -->
             <button id="mobile-menu-toggle" aria-label="Open menu">
                 <span></span>
                 <span></span>
@@ -50,18 +65,16 @@
         </div>
     </header>
 
-    <!-- ===== Mobile Sidebar (hamburger menu) ===== -->
+    <!-- ===== Mobile Sidebar ===== -->
     <div id="mobile-sidebar">
         <div id="sidebar-backdrop"></div>
         <div id="sidebar-panel">
             <button id="sidebar-close" aria-label="Close menu">&times;</button>
             <nav>
                 <ul id="sidebar-nav">
-                    <!-- Main app sections -->
                     <li><a href="#" data-section="marketplace">Marketplace</a></li>
                     <li><a href="#" data-section="for-sellers">Become a Seller</a></li>
                     <li><a href="#" data-section="dashboard-login">Seller Login</a></li>
-                    <!-- These are shown only when logged in (JS will toggle visibility) -->
                     <li id="sidebar-dashboard-link" style="display:none;"><a href="#" data-section="dashboard">📦 My Dashboard</a></li>
                     <li id="sidebar-store-link" style="display:none;"><a href="#" data-section="view-store">🏪 View My Store</a></li>
                     <li id="sidebar-logout-link" style="display:none;"><a href="#" id="logout-btn">🚪 Log Out</a></li>
@@ -76,7 +89,7 @@
 
     <!-- ===== Dynamic Content Area ===== -->
     <main id="app-content">
-        <!-- Views will be injected here by the router -->
+        <!-- Views injected here by the router -->
     </main>
 
     <!-- ===== Contact Seller Modal ===== -->
@@ -91,25 +104,20 @@
     </div>
 
     <!-- ===================== JavaScript ===================== -->
-    <!-- Core app logic (router, session, sellers/products helpers) -->
     <script src="app.js"></script>
-    <!-- Marketplace module (homepage grid) -->
     <script src="marketplace.js"></script>
-    <!-- Seller registration & dashboard -->
     <script src="sellers.js"></script>
-    <!-- Public store page -->
     <script src="store.js"></script>
-    <!-- Contact modal -->
     <script src="contact.js"></script>
 
     <script>
-  if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-      navigator.serviceWorker.register('sw.js')
-        .then((reg) => console.log('Service Worker registered'))
-        .catch((err) => console.log('Service Worker failed', err));
-    });
-  }
-</script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('sw.js')
+                    .then((reg) => console.log('Service Worker registered'))
+                    .catch((err) => console.log('Service Worker failed', err));
+            });
+        }
+    </script>
 </body>
 </html>
