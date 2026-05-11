@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About — AURA</title>
+
+    <!-- Inter Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+    <!-- Shared Stylesheet -->
+    <link rel="stylesheet" href="style.css">
+
+    <!-- Page-specific styles for the About content -->
+    <style>
+        /* Subpage hero (shared pattern, can be reused by contact page) */
+        .about-hero {
+            text-align: center;
+            padding: 6rem 1.5rem 3rem;
+            background: radial-gradient(circle at 50% 0%, rgba(56, 189, 248, 0.08), transparent 60%);
+        }
+
+        .about-hero .container h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            margin-bottom: 0.75rem;
+            color: #fff;
+        }
+
+        .about-hero .container p {
+            font-size: 1.15rem;
+            color: #ffffff;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Story section */
+        .about-story {
+            padding: 4rem 1.5rem;
+        }
+
+        .about-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 2.5rem;
+            align-items: center;
+        }
+
+        .about-text h2 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 1.25rem;
+            color: #fff;
+        }
+
+        .about-text p {
+            color: #ffffff;
+            margin-bottom: 1rem;
+            line-height: 1.8;
+            max-width: 600px;
+        }
+
+        .about-image {
+            width: 100%;
+            border-radius: 1.25rem;
+            overflow: hidden;
+            box-shadow: 0 12px 30px rgba(186, 173, 173, 0.4);
+            border: 1px solid rgba(246, 238, 238, 0.06);
+        }
+
+        .about-image img {
+            display: block;
+            width: 50%;
+            height: auto;
+        }
+
+        /* Values section */
+        .about-values {
+            padding: 3rem 1.5rem 5rem;
+            text-align: center;
+        }
+
+        .about-values h2 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 2.5rem;
+            color: #fff;
+        }
+
+        .values-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2rem;
+            max-width: 960px;
+            margin: 0 auto;
+        }
+
+        .value-card {
+            background-color: #000000;
+            border-radius: 1.25rem;
+            padding: 2rem 1.5rem;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: transform 0.25s, box-shadow 0.25s;
+        }
+
+        .value-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 24px rgba(134, 124, 124, 0.3);
+        }
+
+        .value-icon {
+            font-size: 2rem;
+            color: #ffffff;
+            margin-bottom: 1rem;
+        }
+
+        .value-card h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+            color: #f1f5f9;
+        }
+
+        .value-card p {
+            color: #ffffff;
+            font-size: 0.95rem;
+            line-height: 1.7;
+        }
+
+        /* Responsive layout for the story grid and values cards */
+        @media (min-width: 768px) {
+            .about-hero .container h1 {
+                font-size: 3.5rem;
+            }
+
+            .about-grid {
+                flex-direction: row;
+                align-items: center;
+                justify-content: space-between;
+            }
+
+            .about-text {
+                flex: 1;
+            }
+
+            .about-image {
+                flex: 1;
+            }
+
+            .values-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+    </style>
+</head>
+<body class="bg-[#0f172a] text-white font-sans antialiased">  
+
+    <!-- ===== STICKY HEADER ===== -->
+    <header id="main-header">
+        <div class="container">
+            <div id="logo">
+                <a href="index.html">AURA<span>.</span></a>
+            </div>
+            <nav id="desktop-nav">
+                <ul>
+                    <li><a href="index.html#products">Shop</a></li>
+                    <li><a href="about.html" class="active">About</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+            </nav>
+            <div id="cart-icon-wrapper">
+                <button id="cart-toggle" aria-label="Open cart">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="9" cy="21" r="1"></circle>
+                        <circle cx="20" cy="21" r="1"></circle>
+                        <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+                    </svg>
+                    <span id="cart-badge">0</span>
+                </button>
+            </div>
+            <button id="mobile-menu-toggle" aria-label="Open menu">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </header>
+
+    <!-- ===== MOBILE SIDEBAR ===== -->
+    <div id="mobile-sidebar">
+        <div id="sidebar-backdrop"></div>
+        <div id="sidebar-panel">
+            <button id="sidebar-close" aria-label="Close menu">&times;</button>
+            <nav>
+                <ul>
+                    <li><a href="index.html#products">Shop</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+
+    <!-- ===== PAGE CONTENT ===== -->
+    <main id="about-page">
+        <section class="about-hero">
+            <div class="container">
+                <h1>Our Philosophy</h1>
+                <p>Minimalism is not emptiness — it's the pursuit of essential beauty.</p>
+            </div>
+        </section>
+
+        <section class="about-story container">
+            <div class="about-grid">
+                <div class="about-text">
+                    <h2>Designed for the modern creator</h2>
+                    <p>
+                        AURA was born from a belief that the objects we use every day should be
+                        as intentional as the work we do. Every product we design strips away
+                        the unnecessary, leaving only what matters: form, function, and durability.
+                    </p>
+                    <p>
+                        Our materials are sourced responsibly, our manufacturing is transparent,
+                        and our packaging is 100% recyclable. We don't follow trends — we create
+                        pieces that become part of your daily ritual.
+                    </p>
+                </div>
+                <div class="about-image">
+                    <img src="https://cdn.premiumguest.com/wl/images/aura-/4.png" 
+                         alt="Minimalist workspace" loading="lazy" />
+                </div>
+            </div>
+        </section>
+
+        <section class="about-values container">
+            <h2>Our values</h2>
+            <div class="values-grid">
+                <div class="value-card">
+                    <div class="value-icon">✧</div>
+                    <h3>Precision</h3>
+                    <p>Every detail is considered, every material chosen for its purpose.</p>
+                </div>
+                <div class="value-card">
+                    <div class="value-icon">◈</div>
+                    <h3>Sustainability</h3>
+                    <p>We use renewable energy and give 1% of every sale to environmental causes.</p>
+                </div>
+                <div class="value-card">
+                    <div class="value-icon">❖</div>
+                    <h3>Longevity</h3>
+                    <p>Our products are built to last, with a lifetime repair guarantee.</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- ===== CART DRAWER ===== -->
+    <div id="cart-overlay"></div>
+    <div id="cart-drawer">
+        <div id="cart-header">
+            <h2>Your Cart</h2>
+            <button id="cart-close" aria-label="Close cart">&times;</button>
+        </div>
+        <div id="cart-items"></div>
+        <div id="cart-empty">
+            <p>Your cart is empty.</p>
+        </div>
+        <div id="cart-footer">
+            <div id="cart-subtotal">
+                <span>Subtotal</span>
+                <span id="subtotal-amount">$0.00</span>
+            </div>
+            <div id="cart-shipping">
+                <span>Shipping</span>
+                <span id="shipping-amount">Free</span>
+            </div>
+            <div id="cart-total">
+                <span>Total</span>
+                <span id="total-amount">$0.00</span>
+            </div>
+            <button id="checkout-button">Checkout</button>
+        </div>
+    </div>
+
+    <!-- ===== SUCCESS MODAL ===== -->
+    <div id="success-modal" hidden>
+        <div id="modal-backdrop"></div>
+        <div id="modal-content">
+            <span id="modal-icon">&#10003;</span>
+            <h3>Order Confirmed</h3>
+            <p>Thank you for your purchase.</p>
+            <p>Your order number is <strong>#AURA-001</strong></p>
+            <button id="modal-close">Continue Shopping</button>
+        </div>
+    </div>
+
+    <!-- Shared JavaScript (cart logic, interactions) -->
+    <script src="app.js"></script>
+</body>
+</html>

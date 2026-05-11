@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Aura - The Future of Essentials</title>
+
+    <link rel="stylesheet" href="style.css" />
+
+    <!-- Tailwind CSS CDN(inactive until I add classes)-->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Inter Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+
+</head>
+<body>
+
+    <!-- =====Sticky Container===== -->
+    <header id="main-header">
+        <div class="container"> 
+            <!-- logo -->
+            <div class="logo">
+                <a href="#">Aura<span></span></a>   
+        </div>
+
+        <!-- Desktop Navigation -->
+        <nav id="desktop-nav">
+            <ul>
+                <li><a href="#">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+        </nav>
+
+
+        <!-- Cart Icon with Badge -->
+        <div id="cart-icon-wrapper">
+            <button id="cart-toggle" aria-label="Toggle Cart">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-3 3h15a3 3 0 00-3-3m-12-9h15m-12 0L4.591 5.591M6.343 5.591A48.507 48.507 0 0112 5.25c2.998 0 5.977.608 8.657 1.341M15 10.5a3 3 0 11-6 0m6 0a3 3 0 016 0" />
+                </svg>
+                <span id="cart-badge">0</span>
+            </button>
+        </div>
+
+
+         <!-- Mobile Menu Toggle Button -->
+            <button id="mobile-menu-toggle" aria-label="Open menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </header>
+
+    <!-- ===== Mobile Sidebar (hidden by default) ===== -->
+    <div id="mobile-sidebar">
+        <div id="sidebar-backdrop"></div>
+        <div id="sidebar-panel">
+            <button id="sidebar-close" aria-label="Close menu">&times;</button>
+            <nav>
+                <ul>
+                    <li><a href="#">Shop</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+
+    <!-- Main content will follow in later steps -->
+
+     <!-- ===== Hero Section ===== -->
+    <section id="hero">
+        <div id="hero-content">
+            <h1>The Future of Essentials.</h1>
+            <p>Premium minimalism redefined. Discover clean design, uncompromising quality.</p>
+            <a href="#products" id="hero-cta">Shop the Collection</a>
+        </div>
+        <!-- Optional: background image container if needed later -->
+        <div id="hero-background"></div>
+    </section>
+
+        <!-- ===== Product Section ===== -->
+    <section id="products">
+        <h2>Essential Collection</h2>
+        <div id="product-grid">
+            <!-- Products will be rendered dynamically by JavaScript -->
+        </div>
+    </section>
+
+
+        <!-- ===== Cart Drawer Overlay ===== -->
+    <div id="cart-overlay"></div>
+
+    <!-- ===== Cart Drawer ===== -->
+    <div id="cart-drawer">
+        <!-- Drawer Header -->
+        <div id="cart-header">
+            <h2>Your Cart</h2>
+            <button id="cart-close" aria-label="Close cart">&times;</button>
+        </div>
+
+        <!-- Cart Items List -->
+        <div id="cart-items">
+            <!-- Dynamically populated -->
+        </div>
+
+        <!-- Empty Cart Message (hidden when items exist) -->
+        <div id="cart-empty">
+            <p>Your cart is empty.</p>
+        </div>
+
+        <!-- Cart Footer with Totals -->
+        <div id="cart-footer">
+            <div id="cart-subtotal">
+                <span>Subtotal</span>
+                <span id="subtotal-amount">$0.00</span>
+            </div>
+            <div id="cart-shipping">
+                <span>Shipping</span>
+                <span id="shipping-amount">Free</span>
+            </div>
+            <div id="cart-total">
+                <span>Total</span>
+                <span id="total-amount">$0.00</span>
+            </div>
+            <button id="checkout-button">Checkout</button>
+        </div>
+    </div>
+
+    <!-- ===== Checkout Success Modal ===== -->
+    <div id="success-modal" hidden>
+        <div id="modal-backdrop"></div>
+        <div id="modal-content">
+            <span id="modal-icon">&#10003;</span>
+            <h3>Order Confirmed</h3>
+            <p>Thank you for your purchase.</p>
+            <p>Your order number is <strong>#AURA-001</strong></p>
+            <button id="modal-close">Continue Shopping</button>
+        </div>
+    </div>
+
+    </header>
+
+    <script src="app.js"></script>
+
+</body>
+</html>
