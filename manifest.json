@@ -1,7 +1,7 @@
 {
   "short_name": "AURA",
   "name": "AURA Market – Multi-Vendor Marketplace",
-  "description": "Free storefront platform for sellers. Browse products and contact sellers directly.",
+  "description": "Free storefront platform for sellers powered by El Baronn. Browse products and contact sellers directly.",
   "start_url": "index.html",
   "display": "standalone",
   "background_color": "#000000",

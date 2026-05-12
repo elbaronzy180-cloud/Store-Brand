@@ -43,7 +43,7 @@
             <input type="text" id="reg-whatsapp" placeholder="+1234567890" />
           </div>
           <div class="form-group">
-            <label for="reg-passkey">Passkey (4–8 characters) </label>
+            <label for="reg-passkey">Passkey (4–8 characters)</label>
             <input type="password" id="reg-passkey" minlength="4" maxlength="8" placeholder="Enter a passkey" required />
             <span class="inline-error" id="reg-passkey-error">Passkey must be 4–8 characters.</span>
           </div>
@@ -55,7 +55,6 @@
       </div>
     `;
 
-    // Auto-generate slug from store name
     const storeNameInput = document.getElementById('reg-store-name');
     const slugInput = document.getElementById('reg-slug');
     storeNameInput.addEventListener('input', () => {
@@ -72,11 +71,9 @@
       slugInput.dataset.manuallyChanged = 'true';
     });
 
-    // Form submission
     const form = document.getElementById('seller-registration-form');
     form.addEventListener('submit', (e) => {
       e.preventDefault();
-      // Hide all errors
       document.querySelectorAll('.inline-error').forEach(el => el.style.display = 'none');
       let valid = true;
 
@@ -88,19 +85,16 @@
       const whatsapp = document.getElementById('reg-whatsapp').value.trim();
       const passkey = document.getElementById('reg-passkey').value;
 
-      // Validate store name
       if (!storeName) {
         document.getElementById('reg-name-error').style.display = 'block';
         valid = false;
       }
-      // Validate slug (lowercase, hyphens, no spaces)
       const slugRegex = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
       if (!slug || !slugRegex.test(slug)) {
         document.getElementById('reg-slug-error').textContent = 'Slug must be lowercase letters, numbers, and hyphens only.';
         document.getElementById('reg-slug-error').style.display = 'block';
         valid = false;
       } else {
-        // Check uniqueness
         const sellers = window.AURA.loadSellers();
         if (sellers.some(s => s.slug === slug)) {
           document.getElementById('reg-slug-error').textContent = 'This slug is already taken. Please choose another.';
@@ -124,7 +118,6 @@
 
       if (!valid) return;
 
-      // Create seller object
       const newSeller = {
         id: 'seller_' + Date.now() + '_' + Math.random().toString(36).substr(2, 5),
         storeName,
@@ -132,7 +125,7 @@
         logo,
         phone,
         email,
-        whatsapp: whatsapp || phone,  // default to phone if empty
+        whatsapp: whatsapp || phone,
         passkey
       };
 
@@ -140,13 +133,11 @@
       sellers.push(newSeller);
       window.AURA.saveSellers(sellers);
 
-      // Auto login
       window.AURA.setLoggedInSeller(newSeller.id);
       window.AURA.showToast('Store created! Welcome to your dashboard.');
       window.AURA.router('dashboard');
     });
 
-    // Handle login link click (already global listener but ensure it works)
     const loginLink = appContent.querySelector('[data-section="dashboard-login"]');
     if (loginLink) {
       loginLink.addEventListener('click', (e) => {
@@ -226,14 +217,11 @@
     const appContent = document.getElementById('app-content');
     if (!appContent) return;
 
-    // Store the product list in a variable for easy access
     const allProducts = window.AURA.loadProducts();
     const myProducts = allProducts.filter(p => p.sellerId === sellerId);
 
-    // Active tab (default: 'add')
     let activeTab = 'add';
 
-    // Render dashboard skeleton
     function renderDashboardUI() {
       appContent.innerHTML = `
         <div class="dashboard-header" style="display:flex; justify-content:space-between; align-items:center; margin-bottom:2rem;">
@@ -242,19 +230,14 @@
             <a href="?shop=${seller.slug}" target="_blank" style="color:#fff; text-decoration:underline; font-size:0.9rem;">View My Store →</a>
           </div>
         </div>
-
         <div class="dashboard-tabs">
           <button class="dashboard-tab ${activeTab === 'add' ? 'active' : ''}" data-tab="add">Add Product</button>
           <button class="dashboard-tab ${activeTab === 'products' ? 'active' : ''}" data-tab="products">My Products</button>
           <button class="dashboard-tab ${activeTab === 'settings' ? 'active' : ''}" data-tab="settings">Store Settings</button>
         </div>
-
-        <div id="dashboard-content-panel">
-          <!-- content loaded dynamically based on activeTab -->
-        </div>
+        <div id="dashboard-content-panel"></div>
       `;
 
-      // Tab click listeners
       document.querySelectorAll('.dashboard-tab').forEach(btn => {
         btn.addEventListener('click', (e) => {
           activeTab = e.target.dataset.tab;
@@ -262,7 +245,6 @@
         });
       });
 
-      // Render appropriate panel
       const panel = document.getElementById('dashboard-content-panel');
       switch (activeTab) {
         case 'add':
@@ -280,186 +262,144 @@
       }
     }
 
-    // Helper to escape HTML
     function escapeHTML(str) {
       const div = document.createElement('div');
       div.textContent = str;
       return div.innerHTML;
     }
 
-    // --- Add Product form (updated with file upload) ---
-function renderAddProductForm() {
-  return `
-    <h3 style="margin-bottom:1rem; font-size:1.3rem;">Add New Product</h3>
-    <form id="add-product-form" novalidate>
-      <div class="form-group">
-        <label>Product Name *</label>
-        <input type="text" id="prod-name" required />
-        <span class="inline-error" id="add-name-error">Required</span>
-      </div>
-      <div class="form-group">
-        <label>Price </label>
-        <input type="number" id="prod-price" min="0" step="0.01" required />
-        <span class="inline-error" id="add-price-error">Enter a valid price</span>
-      </div>
-
-      <!-- Image: file upload / capture OR URL -->
-      <div class="form-group">
-        <label>Product Image *</label>
-        <div class="image-upload-area" id="image-upload-area">
-          <img id="upload-preview" class="preview" alt="Preview" />
-          <p id="upload-placeholder">Click to upload or take a photo</p>
-          <small>or paste an image URL below</small>
-        </div>
-        <input type="file" id="prod-image-file" accept="image/*" capture="environment" style="display:none;" />
-        <input type="text" id="prod-image-url" placeholder="https://example.com/image.jpg" />
-        <span class="inline-error" id="add-image-error">Either upload an image or provide a URL</span>
-      </div>
-
-      <div class="form-group">
-        <label>Description</label>
-        <textarea id="prod-desc" rows="3" required></textarea>
-        <span class="inline-error" id="add-desc-error">Required</span>
-      </div>
-      <button type="submit" class="btn-primary">Add Product</button>
-    </form>
-  `;
-}
-
-function setupAddProduct() {
-  // Handle file upload click
-  const uploadArea = document.getElementById('image-upload-area');
-  const fileInput = document.getElementById('prod-image-file');
-  const preview = document.getElementById('upload-preview');
-  const placeholder = document.getElementById('upload-placeholder');
-  const urlInput = document.getElementById('prod-image-url');
-
-  // Store selected file data URL
-  let uploadedDataUrl = null;
-
-  uploadArea.addEventListener('click', () => fileInput.click());
-
-  fileInput.addEventListener('change', (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
-
-    // Compress & convert to base64
-    const reader = new FileReader();
-    reader.onload = (ev) => {
-      const img = new Image();
-      img.onload = () => {
-        // Resize to max width 800px (keep aspect ratio)
-        const maxWidth = 800;
-        const canvas = document.createElement('canvas');
-        let width = img.width;
-        let height = img.height;
-        if (width > maxWidth) {
-          height = (height * maxWidth) / width;
-          width = maxWidth;
-        }
-        canvas.width = width;
-        canvas.height = height;
-        const ctx = canvas.getContext('2d');
-        ctx.drawImage(img, 0, 0, width, height);
-        // Get data URL (JPEG, quality 0.8)
-        uploadedDataUrl = canvas.toDataURL('image/jpeg', 0.8);
-        preview.src = uploadedDataUrl;
-        preview.classList.add('visible');
-        placeholder.style.display = 'none';
-        urlInput.value = ''; // clear URL if file selected
-      };
-      img.src = ev.target.result;
-    };
-    reader.readAsDataURL(file);
-  });
-
-  // If URL is typed, reset file
-  urlInput.addEventListener('input', () => {
-    if (urlInput.value.trim()) {
-      uploadedDataUrl = null;
-      preview.classList.remove('visible');
-      placeholder.style.display = 'block';
-      fileInput.value = '';
+    // --- Add Product form ---
+    function renderAddProductForm() {
+      return `
+        <h3 style="margin-bottom:1rem; font-size:1.3rem;">Add New Product</h3>
+        <form id="add-product-form" novalidate>
+          <div class="form-group">
+            <label>Product Name</label>
+            <input type="text" id="prod-name" required />
+            <span class="inline-error" id="add-name-error">Required</span>
+          </div>
+          <div class="form-group">
+            <label>Price</label>
+            <input type="number" id="prod-price" min="0" step="0.01" required />
+            <span class="inline-error" id="add-price-error">Enter a valid price</span>
+          </div>
+          <div class="form-group">
+            <label>Product Image</label>
+            <div class="image-upload-area" id="image-upload-area">
+              <img id="upload-preview" class="preview" alt="Preview" />
+              <p id="upload-placeholder">Click to upload or take a photo</p>
+              <small>or paste an image URL below</small>
+            </div>
+            <input type="file" id="prod-image-file" accept="image/*" capture="environment" style="display:none;" />
+            <input type="text" id="prod-image-url" placeholder="https://example.com/image.jpg" />
+            <span class="inline-error" id="add-image-error">Either upload an image or provide a URL</span>
+          </div>
+          <div class="form-group">
+            <label>Description</label>
+            <textarea id="prod-desc" rows="3" required></textarea>
+            <span class="inline-error" id="add-desc-error">Required</span>
+          </div>
+          <button type="submit" class="btn-primary">Add Product</button>
+        </form>
+      `;
     }
-  });
 
-  // Form submission
-  document.getElementById('add-product-form').addEventListener('submit', (e) => {
-    e.preventDefault();
-    const name = document.getElementById('prod-name').value.trim();
-    const price = parseFloat(document.getElementById('prod-price').value);
-    const url = urlInput.value.trim();
-    const desc = document.getElementById('prod-desc').value.trim();
-
-    // Validation
-    let valid = true;
-    document.querySelectorAll('#add-product-form .inline-error').forEach(el => el.style.display = 'none');
-    if (!name) { document.getElementById('add-name-error').style.display = 'block'; valid = false; }
-    if (isNaN(price) || price < 0) { document.getElementById('add-price-error').style.display = 'block'; valid = false; }
-    if (!uploadedDataUrl && !url) {
-      document.getElementById('add-image-error').style.display = 'block';
-      valid = false;
-    }
-    if (!desc) { document.getElementById('add-desc-error').style.display = 'block'; valid = false; }
-
-    if (!valid) return;
-
-    const image = uploadedDataUrl || url;  // prefer file upload
-
-    const newProduct = {
-      id: 'prod_' + Date.now(),
-      sellerId: sellerId,
-      name,
-      price,
-      image,
-      description: desc
-    };
-
-    const allProds = window.AURA.loadProducts();
-    allProds.push(newProduct);
-    window.AURA.saveProducts(allProds);
-    window.AURA.showToast('Product added! ✓');
-    e.target.reset();
-    // reset upload UI
-    preview.classList.remove('visible');
-    placeholder.style.display = 'block';
-    uploadedDataUrl = null;
-  });
-}
     function setupAddProduct() {
-      document.getElementById('add-product-form').addEventListener('submit', (e) => {
-        e.preventDefault();
-        const name = document.getElementById('prod-name').value.trim();
-        const price = parseFloat(document.getElementById('prod-price').value);
-        const image = document.getElementById('prod-image').value.trim();
-        const desc = document.getElementById('prod-desc').value.trim();
+      const uploadArea = document.getElementById('image-upload-area');
+      const fileInput = document.getElementById('prod-image-file');
+      const preview = document.getElementById('upload-preview');
+      const placeholder = document.getElementById('upload-placeholder');
+      const urlInput = document.getElementById('prod-image-url');
 
-        let valid = true;
-        document.querySelectorAll('#add-product-form .inline-error').forEach(el => el.style.display = 'none');
-        if (!name) { document.getElementById('add-name-error').style.display = 'block'; valid = false; }
-        if (isNaN(price) || price < 0) { document.getElementById('add-price-error').style.display = 'block'; valid = false; }
-        if (!image) { document.getElementById('add-image-error').style.display = 'block'; valid = false; }
-        if (!desc) { document.getElementById('add-desc-error').style.display = 'block'; valid = false; }
+      let uploadedDataUrl = null;
 
-        if (!valid) return;
+      if (uploadArea) uploadArea.addEventListener('click', () => fileInput.click());
 
-        const newProduct = {
-          id: 'prod_' + Date.now(),
-          sellerId: sellerId,
-          name,
-          price,
-          image,
-          description: desc
-        };
+      if (fileInput) {
+        fileInput.addEventListener('change', (e) => {
+          const file = e.target.files[0];
+          if (!file) return;
+          const reader = new FileReader();
+          reader.onload = (ev) => {
+            const img = new Image();
+            img.onload = () => {
+              const maxWidth = 800;
+              const canvas = document.createElement('canvas');
+              let width = img.width;
+              let height = img.height;
+              if (width > maxWidth) {
+                height = (height * maxWidth) / width;
+                width = maxWidth;
+              }
+              canvas.width = width;
+              canvas.height = height;
+              const ctx = canvas.getContext('2d');
+              ctx.drawImage(img, 0, 0, width, height);
+              uploadedDataUrl = canvas.toDataURL('image/jpeg', 0.8);
+              preview.src = uploadedDataUrl;
+              preview.classList.add('visible');
+              placeholder.style.display = 'none';
+              urlInput.value = '';
+            };
+            img.src = ev.target.result;
+          };
+          reader.readAsDataURL(file);
+        });
+      }
 
-        const allProds = window.AURA.loadProducts();
-        allProds.push(newProduct);
-        window.AURA.saveProducts(allProds);
-        window.AURA.showToast('Product added! ✓');
-        e.target.reset();
-        // Refresh My Products view? We'll just stay on 'add' tab, but maybe switch to products? The spec says form resets, user can add another.
-        // Optionally update myProducts and re-render? For simplicity, we can just reset form.
-      });
+      if (urlInput) {
+        urlInput.addEventListener('input', () => {
+          if (urlInput.value.trim()) {
+            uploadedDataUrl = null;
+            preview.classList.remove('visible');
+            placeholder.style.display = 'block';
+            fileInput.value = '';
+          }
+        });
+      }
+
+      const form = document.getElementById('add-product-form');
+      if (form) {
+        form.addEventListener('submit', (e) => {
+          e.preventDefault();
+          const name = document.getElementById('prod-name').value.trim();
+          const price = parseFloat(document.getElementById('prod-price').value);
+          const url = urlInput.value.trim();
+          const desc = document.getElementById('prod-desc').value.trim();
+
+          let valid = true;
+          document.querySelectorAll('#add-product-form .inline-error').forEach(el => el.style.display = 'none');
+          if (!name) { document.getElementById('add-name-error').style.display = 'block'; valid = false; }
+          if (isNaN(price) || price < 0) { document.getElementById('add-price-error').style.display = 'block'; valid = false; }
+          if (!uploadedDataUrl && !url) {
+            document.getElementById('add-image-error').style.display = 'block';
+            valid = false;
+          }
+          if (!desc) { document.getElementById('add-desc-error').style.display = 'block'; valid = false; }
+
+          if (!valid) return;
+
+          const image = uploadedDataUrl || url;
+
+          const newProduct = {
+            id: 'prod_' + Date.now(),
+            sellerId: sellerId,
+            name,
+            price,
+            image,
+            description: desc
+          };
+
+          const allProds = window.AURA.loadProducts();
+          allProds.push(newProduct);
+          window.AURA.saveProducts(allProds);
+          window.AURA.showToast('Product added! ✓');
+          e.target.reset();
+          preview.classList.remove('visible');
+          placeholder.style.display = 'block';
+          uploadedDataUrl = null;
+        });
+      }
     }
 
     // --- My Products list ---
@@ -497,7 +437,6 @@ function setupAddProduct() {
             allProds = allProds.filter(p => p.id !== productId);
             window.AURA.saveProducts(allProds);
             window.AURA.showToast('Product deleted.');
-            // Refresh dashboard (My Products tab)
             window.renderDashboard();
           }
         });
@@ -509,7 +448,6 @@ function setupAddProduct() {
           const allProds = window.AURA.loadProducts();
           const product = allProds.find(p => p.id === productId);
           if (!product) return;
-          // Replace the product list item with an inline edit form
           const listItem = btn.closest('.product-list-item');
           listItem.innerHTML = `
             <form class="edit-product-form" data-product-id="${productId}" style="display:flex; gap:1rem; width:100%; align-items:center;">
@@ -527,12 +465,10 @@ function setupAddProduct() {
             </form>
           `;
 
-          // Cancel button
           listItem.querySelector('.cancel-edit-btn').addEventListener('click', () => {
-            window.renderDashboard(); // re-render my products list
+            window.renderDashboard();
           });
 
-          // Save button
           listItem.querySelector('.edit-product-form').addEventListener('submit', (e) => {
             e.preventDefault();
             const newName = e.target['edit-name'].value.trim();
@@ -643,7 +579,6 @@ function setupAddProduct() {
       });
     }
 
-    // Helper currency formatter
     function formatCurrency(amount) {
       return new Intl.NumberFormat('en-US', {
         style: 'currency',
@@ -651,10 +586,6 @@ function setupAddProduct() {
       }).format(amount);
     }
 
-    // Initial render
     renderDashboardUI();
   };
-
-  // ===================== RE-EXPORT FOR ROUTER =====================
-  // Functions are already globally assigned
 })();
